@@ -74,12 +74,18 @@ the built binary by seeing if it contains a ".note.stapsdt" section.
 
 ::
 
+   $ stap -L 'process("./python").mark("*")'
+   process("./python").mark("function__entry") $arg1:long $arg2:long $arg3:long
+   [...]
    $ readelf -S ./python | grep .note.stapsdt
    [30] .note.stapsdt        NOTE         0000000000000000 00308d78
 
 If you've built Python as a shared library (with --enable-shared), you
 need to look instead within the shared library.  For example::
 
+   $ stap -L 'process("./libpython3*so*").mark("*")'
+   process("./libpython3.3.dm.so.1.0").mark("function__entry") $arg1:long $arg2:long $arg3:long
+   [...]
    $ readelf -S libpython3.3dm.so.1.0 | grep .note.stapsdt
    [29] .note.stapsdt        NOTE         0000000000000000 00365b68
 
